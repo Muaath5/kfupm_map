@@ -1,0 +1,105 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "status": "demo",
+    "warning": "Approximate sample coordinates. Replace before publishing."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kfupm",
+        "parentId": null,
+        "level": 0,
+        "renderOrder": 0,
+        "arName": "حرم جامعة الملك فهد",
+        "enName": "KFUPM Campus",
+        "demo": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1368, 26.3022],
+            [50.1548, 26.3022],
+            [50.1548, 26.3182],
+            [50.1368, 26.3182],
+            [50.1368, 26.3022]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "aljabal",
+        "parentId": "kfupm",
+        "level": 1,
+        "renderOrder": 10,
+        "arName": "الجبل",
+        "enName": "Aljabal",
+        "demo": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1418, 26.3067],
+            [50.1517, 26.3067],
+            [50.1517, 26.3168],
+            [50.1418, 26.3168],
+            [50.1418, 26.3067]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "alsakan",
+        "parentId": "kfupm",
+        "level": 1,
+        "renderOrder": 10,
+        "arName": "السكن",
+        "enName": "Alsakan",
+        "demo": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1376, 26.3070],
+            [50.1415, 26.3070],
+            [50.1415, 26.3168],
+            [50.1376, 26.3168],
+            [50.1376, 26.3070]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "almaslakh",
+        "parentId": "kfupm",
+        "level": 1,
+        "renderOrder": 10,
+        "arName": "المسلخ",
+        "enName": "Almaslakh",
+        "demo": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1376, 26.3028],
+            [50.1475, 26.3028],
+            [50.1475, 26.3065],
+            [50.1376, 26.3065],
+            [50.1376, 26.3028]
+          ]
+        ]
+      }
+    }
+  ]
+}

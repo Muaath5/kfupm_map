@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A lightweight, bilingual map of the KFUPM campus."
+    />
+    <title>KFUPM Campus Map</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQ3ynI52sVhOE77bJLZ1J3OF/1RUEg="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1 id="app-title">KFUPM Campus Map</h1>
+        <p id="app-subtitle">Buildings, services, regions, and paths</p>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="language-button" type="button" aria-label="Change language">
+          العربية
+        </button>
+        <button id="location-button" type="button">My location</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Map controls and place information">
+        <section class="controls">
+          <label for="search-input" id="search-label">Search</label>
+          <input
+            id="search-input"
+            type="search"
+            autocomplete="off"
+            placeholder="Building number or name"
+          />
+
+          <label for="category-filter" id="category-label">Category</label>
+          <select id="category-filter">
+            <option value="all">All categories</option>
+          </select>
+
+          <label class="checkbox-row">
+            <input id="regions-toggle" type="checkbox" checked />
+            <span id="regions-label">Show regions</span>
+          </label>
+
+          <label class="checkbox-row">
+            <input id="network-toggle" type="checkbox" />
+            <span id="network-label">Show routing network</span>
+          </label>
+
+          <button id="reset-button" class="secondary-button" type="button">
+            Show entire campus
+          </button>
+        </section>
+
+        <section id="search-results" class="search-results" hidden></section>
+
+        <section id="place-panel" class="place-panel">
+          <p id="empty-message" class="empty-message">
+            Select a place on the map to view its information.
+          </p>
+
+          <div id="place-content" hidden>
+            <p id="place-category" class="place-category"></p>
+            <h2 id="place-name"></h2>
+            <p id="place-description" class="place-description"></p>
+            <dl id="place-details" class="details-list"></dl>
+          </div>
+        </section>
+
+        <p id="demo-warning" class="demo-warning">
+          Demo geometry only—replace the sample coordinates before publishing.
+        </p>
+      </aside>
+
+      <section class="map-container" aria-label="Interactive campus map">
+        <div id="map"></div>
+        <div id="status-message" class="status-message">Loading map data…</div>
+      </section>
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="app.js"></script>
+  </body>
+</html>

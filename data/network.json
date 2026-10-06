@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "status": "demo",
+    "warning": "Fictional sample routing network. Replace before publishing."
+  },
+  "nodes": [
+    {
+      "id": "n-b22-main",
+      "coordinates": [50.14655, 26.31038],
+      "kind": "entrance",
+      "placeId": "building-22-demo"
+    },
+    {
+      "id": "n-intersection-1",
+      "coordinates": [50.14655, 26.3098],
+      "kind": "intersection"
+    },
+    {
+      "id": "n-intersection-2",
+      "coordinates": [50.1444, 26.3098],
+      "kind": "intersection"
+    },
+    {
+      "id": "n-h815-main",
+      "coordinates": [50.13985, 26.3114],
+      "kind": "entrance",
+      "placeId": "housing-815-demo"
+    },
+    {
+      "id": "n-field-west",
+      "coordinates": [50.14815, 26.31285],
+      "kind": "entrance",
+      "placeId": "main-field-demo"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-b22-to-i1",
+      "from": "n-b22-main",
+      "to": "n-intersection-1",
+      "geometry": [
+        [50.14655, 26.31038],
+        [50.14655, 26.3101],
+        [50.14655, 26.3098]
+      ],
+      "bidirectional": true,
+      "details": {
+        "accessible": true,
+        "stairs": false,
+        "surface": "paved",
+        "shaded": false
+      }
+    },
+    {
+      "id": "e-i1-to-i2",
+      "from": "n-intersection-1",
+      "to": "n-intersection-2",
+      "geometry": [
+        [50.14655, 26.3098],
+        [50.1455, 26.3097],
+        [50.1444, 26.3098]
+      ],
+      "bidirectional": true,
+      "details": {
+        "accessible": true,
+        "stairs": false,
+        "surface": "paved",
+        "shaded": true
+      }
+    },
+    {
+      "id": "e-i2-to-h815",
+      "from": "n-intersection-2",
+      "to": "n-h815-main",
+      "geometry": [
+        [50.1444, 26.3098],
+        [50.1422, 26.3102],
+        [50.1407, 26.3107],
+        [50.13985, 26.3114]
+      ],
+      "bidirectional": true,
+      "details": {
+        "accessible": true,
+        "stairs": false,
+        "surface": "paved",
+        "shaded": false
+      }
+    },
+    {
+      "id": "e-b22-to-field",
+      "from": "n-b22-main",
+      "to": "n-field-west",
+      "geometry": [
+        [50.14655, 26.31038],
+        [50.1471, 26.3111],
+        [50.1477, 26.3120],
+        [50.14815, 26.31285]
+      ],
+      "bidirectional": true,
+      "details": {
+        "accessible": false,
+        "stairs": true,
+        "surface": "steps",
+        "shaded": false
+      }
+    }
+  ]
+}

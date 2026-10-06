@@ -1,0 +1,111 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "status": "demo",
+    "warning": "Fictional sample places and approximate coordinates. Replace before publishing."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "building-22-demo",
+        "number": "22",
+        "arName": "مبنى ٢٢ — مثال",
+        "enName": "Building 22 — Example",
+        "aliases": ["B22", "22", "مبنى 22"],
+        "category": "academic",
+        "regionId": "aljabal",
+        "entranceNodeIds": ["n-b22-main"],
+        "descriptionEn": "Example academic building. Replace this record with verified information.",
+        "descriptionAr": "مبنى أكاديمي تجريبي. استبدل هذه المعلومات ببيانات موثوقة.",
+        "demo": true,
+        "details": {
+          "floors": 5,
+          "departments": ["Example Department"],
+          "accessibleEntrance": true,
+          "maintenanceStatus": "unknown"
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1461, 26.3104],
+            [50.1470, 26.3104],
+            [50.1470, 26.3111],
+            [50.1461, 26.3111],
+            [50.1461, 26.3104]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "housing-815-demo",
+        "number": "815",
+        "arName": "سكن ٨١٥ — مثال",
+        "enName": "Housing 815 — Example",
+        "aliases": ["815", "Housing 815", "سكن 815"],
+        "category": "housing",
+        "regionId": "alsakan",
+        "entranceNodeIds": ["n-h815-main"],
+        "descriptionEn": "Example housing record with category-specific details.",
+        "descriptionAr": "سجل تجريبي للسكن يحتوي على معلومات خاصة بهذا التصنيف.",
+        "demo": true,
+        "details": {
+          "roomCount": 120,
+          "floors": 4,
+          "maintenanceStatus": "good",
+          "laundryAvailable": true
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1390, 26.3110],
+            [50.1398, 26.3110],
+            [50.1398, 26.3118],
+            [50.1390, 26.3118],
+            [50.1390, 26.3110]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "main-field-demo",
+        "number": null,
+        "arName": "المسطح الأخضر — مثال",
+        "enName": "Main Grass Field — Example",
+        "aliases": ["field", "grass", "ملعب", "مسطح أخضر"],
+        "category": "grass",
+        "regionId": "aljabal",
+        "entranceNodeIds": ["n-field-west"],
+        "descriptionEn": "Example recreational grass field.",
+        "descriptionAr": "مسطح أخضر ترفيهي تجريبي.",
+        "demo": true,
+        "details": {
+          "condition": "good",
+          "irrigation": "daily",
+          "lighting": true,
+          "seating": true
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [50.1482, 26.3122],
+            [50.1502, 26.3122],
+            [50.1502, 26.3135],
+            [50.1482, 26.3135],
+            [50.1482, 26.3122]
+          ]
+        ]
+      }
+    }
+  ]
+}
