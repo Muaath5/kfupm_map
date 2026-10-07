@@ -114,6 +114,14 @@ function currentText() {
   return TEXT[state.language];
 }
 
+function refreshMapLayout() {
+  // Direction and responsive-layout changes happen after the current frame.
+  // Leaflet must measure the container again before positioning its tiles.
+  requestAnimationFrame(() => {
+    map.invalidateSize({ animate: false, pan: false });
+  });
+}
+
 function localizedName(properties) {
   if (state.language === "ar") {
     return properties.arName || properties.enName || properties.id;
@@ -457,6 +465,8 @@ function updateLanguage() {
       if (selectedFeature) renderPlacePanel(selectedFeature.properties);
     }
   }
+
+  refreshMapLayout();
 }
 
 function fitCampus() {
@@ -523,6 +533,7 @@ elements.networkToggle.addEventListener("change", () => {
 });
 
 elements.resetButton.addEventListener("click", fitCampus);
+window.addEventListener("resize", refreshMapLayout);
 
 async function loadData() {
   try {
@@ -549,6 +560,7 @@ async function loadData() {
     buildPlaceLayer();
     buildNetworkLayer();
     fitCampus();
+    refreshMapLayout();
     hideStatus();
   } catch (error) {
     console.error(error);

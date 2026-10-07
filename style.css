@@ -248,6 +248,17 @@ select {
   min-height: 20rem;
 }
 
+/*
+ * Leaflet positions map tiles with left/top coordinates. If the document is
+ * switched to RTL, some browsers mirror that positioning and tiles appear
+ * missing or shuffled. Keep the map's internal coordinate system LTR while
+ * allowing the surrounding interface to remain Arabic/RTL.
+ */
+#map,
+.leaflet-container {
+  direction: ltr;
+}
+
 .status-message {
   position: absolute;
   top: 0.75rem;
