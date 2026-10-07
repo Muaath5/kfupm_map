@@ -1,95 +1,167 @@
 "use strict";
 
-const CONFIG = {
-  initialCenter: [26.3098, 50.1466],
-  initialZoom: 15,
-  placeColors: {
-    academic: "#2563eb",
-    housing: "#f59e0b",
-    grass: "#16a34a",
-    parking: "#64748b",
-    service: "#dc2626",
-    other: "#7c3aed"
-  }
+const DATA_FILES = {
+  regions: "data/regions.geojson",
+  places: "data/places.geojson",
+  network: "data/network.json"
+};
+
+const CATEGORY_COLORS = {
+  academic: "#2868a9",
+  administration: "#7655a6",
+  housing: "#d77b28",
+  mosque: "#19896b",
+  parking: "#6d7880",
+  grass: "#55a447",
+  sport: "#bb3f72",
+  service: "#9a6a31",
+  food: "#d24c3f",
+  medical: "#c33a3a",
+  other: "#496b5d"
 };
 
 const TEXT = {
   en: {
-    title: "KFUPM Campus Map",
-    subtitle: "Buildings, services, regions, and paths",
+    appTitle: "KFUPM Campus Map",
+    appSubtitle: "Buildings, services, regions, and paths",
     languageButton: "العربية",
     locationButton: "My location",
-    searchLabel: "Search",
+    addPlace: "Add a place",
+    download: "Download places.geojson",
+    downloadDirty: "Download places.geojson *",
+    editorTitle: "Add a place",
+    editorInstructions: "Click at least three points on the map to draw the place boundary.",
+    enName: "English name",
+    arName: "Arabic name",
+    number: "Number",
+    category: "Category",
+    region: "Region",
+    noRegion: "No region",
+    descriptionEn: "English description",
+    descriptionAr: "Arabic description",
+    detailsJson: "Optional details (JSON)",
+    undo: "Undo point",
+    clear: "Clear points",
+    save: "Save place",
+    cancel: "Cancel",
+    point: "point",
+    points: "points",
+    search: "Search",
     searchPlaceholder: "Building number or name",
-    categoryLabel: "Category",
     allCategories: "All categories",
-    regionsLabel: "Show regions",
-    networkLabel: "Show routing network",
-    resetButton: "Show entire campus",
-    emptyMessage: "Select a place on the map to view its information.",
+    showRegions: "Show regions",
+    showNetwork: "Show routing network",
+    reset: "Show entire campus",
+    empty: "Select a place on the map to view its information.",
+    deletePlace: "Delete this place",
     demoWarning: "Demo geometry only—replace the sample coordinates before publishing.",
     loading: "Loading map data…",
-    loadError: "Could not load the data files.",
-    noResults: "No matching places",
-    unknown: "Not provided",
-    yes: "Yes",
-    no: "No",
-    yourLocation: "Your location"
+    loaded: "Map data loaded.",
+    loadError: "Could not load the map data. Open this website through GitHub Pages or a local web server.",
+    drawingStarted: "Drawing mode is active. Click the map to add polygon points.",
+    needPoints: "Add at least three points before saving.",
+    needName: "Enter an English or Arabic name.",
+    invalidDetails: "Optional details must be a valid JSON object.",
+    saved: "Place saved in this browser session.",
+    deleted: "Place deleted from this browser session.",
+    downloaded: "places.geojson downloaded.",
+    deleteConfirm: "Delete this place? You can still restore it by reloading before downloading.",
+    noResults: "No matching places.",
+    locationUnsupported: "Location is not supported by this browser.",
+    locationSearching: "Finding your location…",
+    locationDenied: "Your location could not be found.",
+    regionLabel: "Region",
+    numberLabel: "Number",
+    idLabel: "ID",
+    categoryLabel: "Category"
   },
   ar: {
-    title: "خريطة جامعة الملك فهد",
-    subtitle: "المباني والخدمات والمناطق والمسارات",
+    appTitle: "خريطة جامعة الملك فهد",
+    appSubtitle: "المباني والخدمات والمناطق والمسارات",
     languageButton: "English",
     locationButton: "موقعي",
-    searchLabel: "بحث",
-    searchPlaceholder: "رقم المبنى أو اسمه",
-    categoryLabel: "التصنيف",
-    allCategories: "جميع التصنيفات",
-    regionsLabel: "إظهار المناطق",
-    networkLabel: "إظهار شبكة المسارات",
-    resetButton: "إظهار الحرم بالكامل",
-    emptyMessage: "اختر موقعاً من الخريطة لعرض معلوماته.",
-    demoWarning: "الحدود المعروضة تجريبية—استبدل الإحداثيات قبل نشر الموقع.",
-    loading: "جاري تحميل بيانات الخريطة…",
-    loadError: "تعذر تحميل ملفات البيانات.",
-    noResults: "لا توجد نتائج مطابقة",
-    unknown: "غير متوفر",
-    yes: "نعم",
-    no: "لا",
-    yourLocation: "موقعك"
+    addPlace: "إضافة مكان",
+    download: "تنزيل places.geojson",
+    downloadDirty: "تنزيل places.geojson *",
+    editorTitle: "إضافة مكان",
+    editorInstructions: "اضغط على ثلاث نقاط على الأقل في الخريطة لرسم حدود المكان.",
+    enName: "الاسم بالإنجليزية",
+    arName: "الاسم بالعربية",
+    number: "الرقم",
+    category: "التصنيف",
+    region: "المنطقة",
+    noRegion: "بدون منطقة",
+    descriptionEn: "الوصف بالإنجليزية",
+    descriptionAr: "الوصف بالعربية",
+    detailsJson: "تفاصيل اختيارية (JSON)",
+    undo: "تراجع عن نقطة",
+    clear: "مسح النقاط",
+    save: "حفظ المكان",
+    cancel: "إلغاء",
+    point: "نقطة",
+    points: "نقاط",
+    search: "بحث",
+    searchPlaceholder: "رقم المبنى أو الاسم",
+    allCategories: "كل التصنيفات",
+    showRegions: "إظهار المناطق",
+    showNetwork: "إظهار شبكة المسارات",
+    reset: "عرض الحرم كاملًا",
+    empty: "اختر مكانًا من الخريطة لعرض معلوماته.",
+    deletePlace: "حذف هذا المكان",
+    demoWarning: "الإحداثيات تجريبية فقط—استبدلها قبل نشر الموقع.",
+    loading: "جارٍ تحميل بيانات الخريطة…",
+    loaded: "تم تحميل بيانات الخريطة.",
+    loadError: "تعذر تحميل بيانات الخريطة. افتح الموقع عبر GitHub Pages أو خادم محلي.",
+    drawingStarted: "وضع الرسم مفعّل. اضغط على الخريطة لإضافة نقاط المضلع.",
+    needPoints: "أضف ثلاث نقاط على الأقل قبل الحفظ.",
+    needName: "أدخل الاسم بالعربية أو الإنجليزية.",
+    invalidDetails: "يجب أن تكون التفاصيل الاختيارية كائن JSON صالحًا.",
+    saved: "تم حفظ المكان في جلسة المتصفح الحالية.",
+    deleted: "تم حذف المكان من جلسة المتصفح الحالية.",
+    downloaded: "تم تنزيل places.geojson.",
+    deleteConfirm: "هل تريد حذف هذا المكان؟ يمكنك استعادته بإعادة تحميل الصفحة قبل تنزيل الملف.",
+    noResults: "لا توجد أماكن مطابقة.",
+    locationUnsupported: "المتصفح لا يدعم تحديد الموقع.",
+    locationSearching: "جارٍ تحديد موقعك…",
+    locationDenied: "تعذر تحديد موقعك.",
+    regionLabel: "المنطقة",
+    numberLabel: "الرقم",
+    idLabel: "المعرّف",
+    categoryLabel: "التصنيف"
   }
 };
 
-const state = {
-  language: "en",
-  regions: null,
-  places: null,
-  network: null,
-  regionLayer: null,
-  placeLayer: null,
-  networkLayer: L.layerGroup(),
-  featureLayers: new Map(),
-  selectedPlaceId: null
-};
-
-const map = L.map("map", {
-  zoomControl: true,
-  preferCanvas: true
-}).setView(CONFIG.initialCenter, CONFIG.initialZoom);
-
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-}).addTo(map);
-
-state.networkLayer.addTo(map);
-
 const elements = {
-  title: document.querySelector("#app-title"),
-  subtitle: document.querySelector("#app-subtitle"),
+  appTitle: document.querySelector("#app-title"),
+  appSubtitle: document.querySelector("#app-subtitle"),
   languageButton: document.querySelector("#language-button"),
   locationButton: document.querySelector("#location-button"),
+  addPlaceButton: document.querySelector("#add-place-button"),
+  downloadButton: document.querySelector("#download-button"),
+  editor: document.querySelector("#place-editor"),
+  editorTitle: document.querySelector("#editor-title"),
+  editorInstructions: document.querySelector("#editor-instructions"),
+  pointCount: document.querySelector("#point-count"),
+  enNameLabel: document.querySelector("#editor-en-name-label"),
+  arNameLabel: document.querySelector("#editor-ar-name-label"),
+  numberLabel: document.querySelector("#editor-number-label"),
+  categoryEditorLabel: document.querySelector("#editor-category-label"),
+  regionEditorLabel: document.querySelector("#editor-region-label"),
+  descriptionEnLabel: document.querySelector("#editor-description-en-label"),
+  descriptionArLabel: document.querySelector("#editor-description-ar-label"),
+  detailsLabel: document.querySelector("#editor-details-label"),
+  enName: document.querySelector("#editor-en-name"),
+  arName: document.querySelector("#editor-ar-name"),
+  number: document.querySelector("#editor-number"),
+  editorCategory: document.querySelector("#editor-category"),
+  editorRegion: document.querySelector("#editor-region"),
+  descriptionEn: document.querySelector("#editor-description-en"),
+  descriptionAr: document.querySelector("#editor-description-ar"),
+  editorDetails: document.querySelector("#editor-details"),
+  undoButton: document.querySelector("#undo-point-button"),
+  clearButton: document.querySelector("#clear-points-button"),
+  saveButton: document.querySelector("#save-place-button"),
+  cancelButton: document.querySelector("#cancel-editor-button"),
   searchLabel: document.querySelector("#search-label"),
   searchInput: document.querySelector("#search-input"),
   categoryLabel: document.querySelector("#category-label"),
@@ -106,311 +178,415 @@ const elements = {
   placeName: document.querySelector("#place-name"),
   placeDescription: document.querySelector("#place-description"),
   placeDetails: document.querySelector("#place-details"),
+  deleteButton: document.querySelector("#delete-place-button"),
   demoWarning: document.querySelector("#demo-warning"),
   status: document.querySelector("#status-message")
 };
 
-function currentText() {
-  return TEXT[state.language];
-}
+const map = L.map("map", {
+  zoomControl: true,
+  preferCanvas: true
+}).setView([26.307, 50.145], 15);
 
-function refreshMapLayout() {
-  // Direction and responsive-layout changes happen after the current frame.
-  // Leaflet must measure the container again before positioning its tiles.
-  requestAnimationFrame(() => {
-    map.invalidateSize({ animate: false, pan: false });
-  });
-}
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-function localizedName(properties) {
-  if (state.language === "ar") {
-    return properties.arName || properties.enName || properties.id;
+const state = {
+  language: "en",
+  regions: null,
+  places: null,
+  network: null,
+  regionLayer: null,
+  placeLayer: null,
+  networkLayer: L.layerGroup().addTo(map),
+  editorLayer: L.layerGroup().addTo(map),
+  featureLayers: new Map(),
+  selectedPlaceId: null,
+  dirty: false,
+  statusTimer: null,
+  editor: {
+    active: false,
+    points: []
   }
-  return properties.enName || properties.arName || properties.id;
+};
+
+function t(key) {
+  return TEXT[state.language][key];
 }
 
-function localizedDescription(properties) {
-  if (state.language === "ar") {
-    return properties.descriptionAr || properties.descriptionEn || "";
-  }
-  return properties.descriptionEn || properties.descriptionAr || "";
-}
-
-function humanizeKey(key) {
-  return key
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replaceAll("_", " ")
-    .trim();
-}
-
-function formatValue(value) {
-  const text = currentText();
-
-  if (value === true) return text.yes;
-  if (value === false) return text.no;
-  if (value === null || value === undefined || value === "") return text.unknown;
-  if (Array.isArray(value)) return value.join(", ");
+function textValue(value) {
+  if (value === null || value === undefined || value === "") return "—";
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
 }
 
-function setStatus(message, isError = false) {
+function localizedName(properties = {}) {
+  if (state.language === "ar") {
+    return properties.arName || properties.enName || properties.number || properties.id || "—";
+  }
+  return properties.enName || properties.arName || properties.number || properties.id || "—";
+}
+
+function localizedDescription(properties = {}) {
+  return state.language === "ar"
+    ? properties.descriptionAr || properties.descriptionEn || ""
+    : properties.descriptionEn || properties.descriptionAr || "";
+}
+
+function categoryColor(category) {
+  return CATEGORY_COLORS[String(category || "other").toLowerCase()] || CATEGORY_COLORS.other;
+}
+
+function setStatus(message, isError = false, autoHide = false) {
+  window.clearTimeout(state.statusTimer);
   elements.status.textContent = message;
-  elements.status.style.background = isError
-    ? "rgba(153, 27, 27, 0.92)"
-    : "rgba(23, 33, 27, 0.88)";
+  elements.status.classList.toggle("error", isError);
   elements.status.hidden = false;
+
+  if (autoHide) {
+    state.statusTimer = window.setTimeout(() => {
+      elements.status.hidden = true;
+    }, 2600);
+  }
 }
 
-function hideStatus() {
-  elements.status.hidden = true;
+function refreshMapLayout() {
+  window.requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+  window.setTimeout(() => map.invalidateSize({ pan: false }), 180);
 }
 
-function regionStyle(feature) {
-  const level = Number(feature.properties.level || 0);
-  const colors = ["#005f3c", "#0f766e", "#0891b2", "#7c3aed"];
-
-  return {
-    color: colors[Math.min(level, colors.length - 1)],
-    weight: Math.max(1, 3 - level * 0.65),
-    dashArray: level === 0 ? null : "7 5",
-    fillColor: colors[Math.min(level, colors.length - 1)],
-    fillOpacity: level === 0 ? 0.035 : 0.055
-  };
+function setDirty(isDirty) {
+  state.dirty = isDirty;
+  elements.downloadButton.classList.toggle("dirty", isDirty);
+  elements.downloadButton.textContent = isDirty ? t("downloadDirty") : t("download");
 }
 
-function placeStyle(feature) {
-  const category = feature.properties.category || "other";
-  const color = CONFIG.placeColors[category] || CONFIG.placeColors.other;
-  const selected = feature.properties.id === state.selectedPlaceId;
+function updatePointCount() {
+  const count = state.editor.points.length;
+  elements.pointCount.textContent = `${count} ${count === 1 ? t("point") : t("points")}`;
+  elements.saveButton.disabled = count < 3;
+  elements.undoButton.disabled = count === 0;
+  elements.clearButton.disabled = count === 0;
+}
 
-  return {
-    color: selected ? "#111827" : color,
-    fillColor: color,
-    fillOpacity: selected ? 0.78 : 0.57,
-    weight: selected ? 4 : 2
-  };
+function updateLanguage() {
+  const isArabic = state.language === "ar";
+  document.documentElement.lang = state.language;
+  document.documentElement.dir = isArabic ? "rtl" : "ltr";
+
+  elements.appTitle.textContent = t("appTitle");
+  elements.appSubtitle.textContent = t("appSubtitle");
+  elements.languageButton.textContent = t("languageButton");
+  elements.locationButton.textContent = t("locationButton");
+  elements.addPlaceButton.textContent = t("addPlace");
+  elements.editorTitle.textContent = t("editorTitle");
+  elements.editorInstructions.textContent = t("editorInstructions");
+  elements.enNameLabel.textContent = t("enName");
+  elements.arNameLabel.textContent = t("arName");
+  elements.numberLabel.textContent = t("number");
+  elements.categoryEditorLabel.textContent = t("category");
+  elements.regionEditorLabel.textContent = t("region");
+  elements.descriptionEnLabel.textContent = t("descriptionEn");
+  elements.descriptionArLabel.textContent = t("descriptionAr");
+  elements.detailsLabel.textContent = t("detailsJson");
+  elements.undoButton.textContent = t("undo");
+  elements.clearButton.textContent = t("clear");
+  elements.saveButton.textContent = t("save");
+  elements.cancelButton.textContent = t("cancel");
+  elements.searchLabel.textContent = t("search");
+  elements.searchInput.placeholder = t("searchPlaceholder");
+  elements.categoryLabel.textContent = t("category");
+  elements.regionsLabel.textContent = t("showRegions");
+  elements.networkLabel.textContent = t("showNetwork");
+  elements.resetButton.textContent = t("reset");
+  elements.emptyMessage.textContent = t("empty");
+  elements.deleteButton.textContent = t("deletePlace");
+  elements.demoWarning.textContent = t("demoWarning");
+
+  setDirty(state.dirty);
+  populateRegionOptions();
+  populateCategoryOptions();
+  updatePointCount();
+  buildRegionLayer();
+  buildPlaceLayer();
+  renderSearchResults();
+
+  if (state.selectedPlaceId) selectPlace(state.selectedPlaceId, false);
+  refreshMapLayout();
+}
+
+function getRegionName(regionId) {
+  if (!regionId || !state.regions) return "";
+  const feature = state.regions.features.find((item) => item.properties?.id === regionId);
+  return feature ? localizedName(feature.properties) : regionId;
+}
+
+function populateRegionOptions() {
+  const selected = elements.editorRegion.value;
+  elements.editorRegion.replaceChildren();
+
+  const emptyOption = document.createElement("option");
+  emptyOption.value = "";
+  emptyOption.textContent = t("noRegion");
+  elements.editorRegion.append(emptyOption);
+
+  for (const feature of state.regions?.features || []) {
+    const option = document.createElement("option");
+    option.value = feature.properties?.id || "";
+    option.textContent = localizedName(feature.properties);
+    elements.editorRegion.append(option);
+  }
+
+  elements.editorRegion.value = Array.from(elements.editorRegion.options).some(
+    (option) => option.value === selected
+  )
+    ? selected
+    : "";
+}
+
+function populateCategoryOptions() {
+  const current = elements.categoryFilter.value || "all";
+  const categories = new Set(Object.keys(CATEGORY_COLORS));
+  for (const feature of state.places?.features || []) {
+    categories.add(String(feature.properties?.category || "other").toLowerCase());
+  }
+
+  elements.categoryFilter.replaceChildren();
+  const allOption = document.createElement("option");
+  allOption.value = "all";
+  allOption.textContent = t("allCategories");
+  elements.categoryFilter.append(allOption);
+
+  Array.from(categories)
+    .sort((a, b) => a.localeCompare(b))
+    .forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category;
+      option.textContent = category;
+      elements.categoryFilter.append(option);
+    });
+
+  elements.categoryFilter.value = Array.from(elements.categoryFilter.options).some(
+    (option) => option.value === current
+  )
+    ? current
+    : "all";
 }
 
 function buildRegionLayer() {
   if (state.regionLayer) map.removeLayer(state.regionLayer);
+  if (!state.regions) return;
 
-  const orderedFeatures = [...state.regions.features].sort(
-    (a, b) =>
-      Number(a.properties.renderOrder || 0) -
-      Number(b.properties.renderOrder || 0)
-  );
-
-  state.regionLayer = L.geoJSON(
-    { type: "FeatureCollection", features: orderedFeatures },
-    {
-      style: regionStyle,
-      onEachFeature(feature, layer) {
-        layer.bindTooltip(localizedName(feature.properties), {
-          permanent: false,
-          direction: "center",
-          className: "region-label"
-        });
-      }
+  state.regionLayer = L.geoJSON(state.regions, {
+    style(feature) {
+      const level = Number(feature.properties?.level || feature.properties?.zIndex || 0);
+      return {
+        color: level > 0 ? "#8a6b22" : "#17563f",
+        weight: level > 0 ? 1.5 : 2.5,
+        dashArray: level > 0 ? "6 5" : null,
+        fillColor: level > 0 ? "#e4bf63" : "#4ca07a",
+        fillOpacity: level > 0 ? 0.08 : 0.055
+      };
+    },
+    onEachFeature(feature, layer) {
+      layer.bindTooltip(localizedName(feature.properties), {
+        sticky: true,
+        direction: "top"
+      });
     }
-  );
+  });
 
   if (elements.regionsToggle.checked) state.regionLayer.addTo(map);
+}
+
+function popupNode(feature) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "map-popup";
+  const strong = document.createElement("strong");
+  strong.textContent = localizedName(feature.properties);
+  wrapper.append(strong);
+
+  const number = feature.properties?.number;
+  if (number) {
+    const span = document.createElement("span");
+    span.textContent = `${t("numberLabel")}: ${number}`;
+    wrapper.append(span);
+  }
+  return wrapper;
 }
 
 function buildPlaceLayer() {
   if (state.placeLayer) map.removeLayer(state.placeLayer);
   state.featureLayers.clear();
+  if (!state.places) return;
 
-  const selectedCategory = elements.categoryFilter.value;
-  const visibleFeatures = state.places.features.filter(
-    feature =>
-      selectedCategory === "all" ||
-      feature.properties.category === selectedCategory
-  );
-
-  state.placeLayer = L.geoJSON(
-    { type: "FeatureCollection", features: visibleFeatures },
-    {
-      style: placeStyle,
-      pointToLayer(feature, latlng) {
-        const color =
-          CONFIG.placeColors[feature.properties.category] ||
-          CONFIG.placeColors.other;
-        return L.circleMarker(latlng, {
-          radius: 7,
-          color,
-          fillColor: color,
-          fillOpacity: 0.75,
-          weight: 2
-        });
-      },
-      onEachFeature(feature, layer) {
-        const id = feature.properties.id;
-        state.featureLayers.set(id, layer);
-        layer.bindTooltip(localizedName(feature.properties));
-        layer.on("click", () => selectPlace(id, true));
-      }
+  const selectedCategory = elements.categoryFilter.value || "all";
+  state.placeLayer = L.geoJSON(state.places, {
+    filter(feature) {
+      const category = String(feature.properties?.category || "other").toLowerCase();
+      return selectedCategory === "all" || category === selectedCategory;
+    },
+    style(feature) {
+      const color = categoryColor(feature.properties?.category);
+      const selected = feature.properties?.id === state.selectedPlaceId;
+      return {
+        color: selected ? "#111111" : color,
+        weight: selected ? 4 : 2,
+        fillColor: color,
+        fillOpacity: selected ? 0.52 : 0.34
+      };
+    },
+    pointToLayer(feature, latlng) {
+      return L.circleMarker(latlng, {
+        radius: 7,
+        color: categoryColor(feature.properties?.category),
+        fillOpacity: 0.7
+      });
+    },
+    onEachFeature(feature, layer) {
+      const id = feature.properties?.id;
+      if (id) state.featureLayers.set(id, layer);
+      layer.bindTooltip(localizedName(feature.properties), { sticky: true });
+      layer.bindPopup(() => popupNode(feature));
+      layer.on("click", () => {
+        if (state.editor.active) {
+          return;
+        }
+        if (id) selectPlace(id, false);
+      });
     }
-  ).addTo(map);
+  }).addTo(map);
 }
 
 function buildNetworkLayer() {
   state.networkLayer.clearLayers();
+  const nodeCoordinates = new Map();
 
-  const nodesById = new Map(
-    state.network.nodes.map(node => [node.id, node])
-  );
-
-  for (const edge of state.network.edges) {
-    const coordinates = edge.geometry?.length
-      ? edge.geometry
-      : [nodesById.get(edge.from)?.coordinates, nodesById.get(edge.to)?.coordinates];
-
-    const validCoordinates = coordinates.filter(Boolean);
-    if (validCoordinates.length < 2) continue;
-
-    const latLngs = validCoordinates.map(([longitude, latitude]) => [
-      latitude,
-      longitude
-    ]);
-
-    L.polyline(latLngs, {
-      color: edge.details?.accessible === false ? "#dc2626" : "#0f766e",
-      weight: 4,
-      opacity: 0.78,
-      dashArray: edge.details?.stairs ? "4 6" : null
+  for (const node of state.network?.nodes || []) {
+    const coordinates = node.coordinates || node.point;
+    if (!Array.isArray(coordinates) || coordinates.length < 2) continue;
+    nodeCoordinates.set(node.id, coordinates);
+    L.circleMarker([coordinates[1], coordinates[0]], {
+      radius: 3.5,
+      color: "#552b8c",
+      weight: 1,
+      fillColor: "#ffffff",
+      fillOpacity: 1
     })
-      .bindTooltip(edge.id)
+      .bindTooltip(node.id || "node")
       .addTo(state.networkLayer);
   }
 
-  for (const node of state.network.nodes) {
-    const [longitude, latitude] = node.coordinates;
-    L.circleMarker([latitude, longitude], {
-      radius: node.kind === "entrance" ? 5 : 3,
-      color: "#ffffff",
-      fillColor: node.kind === "entrance" ? "#dc2626" : "#111827",
-      fillOpacity: 1,
-      weight: 1.5
-    })
-      .bindTooltip(`${node.id} · ${node.kind}`)
-      .addTo(state.networkLayer);
+  for (const edge of state.network?.edges || []) {
+    let path = edge.geometry || edge.path || edge.coordinates;
+    if (!Array.isArray(path) && edge.from && edge.to) {
+      const from = nodeCoordinates.get(edge.from);
+      const to = nodeCoordinates.get(edge.to);
+      if (from && to) path = [from, to];
+    }
+    if (!Array.isArray(path) || path.length < 2) continue;
+
+    L.polyline(
+      path.map(([lng, lat]) => [lat, lng]),
+      { color: "#552b8c", weight: 3, opacity: 0.7 }
+    ).addTo(state.networkLayer);
   }
 
   if (!elements.networkToggle.checked) map.removeLayer(state.networkLayer);
 }
 
-function populateCategories() {
-  const previousValue = elements.categoryFilter.value || "all";
-  const categories = [...new Set(
-    state.places.features.map(feature => feature.properties.category || "other")
-  )].sort();
-
-  elements.categoryFilter.replaceChildren();
-
-  const allOption = document.createElement("option");
-  allOption.value = "all";
-  allOption.textContent = currentText().allCategories;
-  elements.categoryFilter.append(allOption);
-
-  for (const category of categories) {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = humanizeKey(category);
-    elements.categoryFilter.append(option);
-  }
-
-  elements.categoryFilter.value = categories.includes(previousValue)
-    ? previousValue
-    : "all";
+function featureById(id) {
+  return state.places?.features.find((feature) => feature.properties?.id === id) || null;
 }
 
-function selectPlace(id, moveMap = false) {
-  const feature = state.places.features.find(
-    candidate => candidate.properties.id === id
-  );
-  if (!feature) return;
+function appendDetail(label, value) {
+  if (value === null || value === undefined || value === "") return;
+  const term = document.createElement("dt");
+  term.textContent = label;
+  const description = document.createElement("dd");
+  description.textContent = textValue(value);
+  elements.placeDetails.append(term, description);
+}
+
+function selectPlace(id, moveMap = true) {
+  const feature = featureById(id);
+  if (!feature) {
+    clearSelection();
+    return;
+  }
 
   state.selectedPlaceId = id;
-  buildPlaceLayer();
-  renderPlacePanel(feature.properties);
-  elements.searchResults.hidden = true;
-
-  if (moveMap) {
-    const layer = state.featureLayers.get(id);
-    if (layer?.getBounds) map.fitBounds(layer.getBounds(), { padding: [45, 45], maxZoom: 19 });
-    else if (layer?.getLatLng) map.setView(layer.getLatLng(), 18);
-  }
-}
-
-function renderPlacePanel(properties) {
+  const properties = feature.properties || {};
   elements.emptyMessage.hidden = true;
   elements.placeContent.hidden = false;
-  elements.placeCategory.textContent = humanizeKey(properties.category || "other");
+  elements.placeCategory.textContent = properties.category || "other";
   elements.placeName.textContent = localizedName(properties);
   elements.placeDescription.textContent = localizedDescription(properties);
   elements.placeDescription.hidden = !localizedDescription(properties);
   elements.placeDetails.replaceChildren();
 
-  const commonDetails = {};
-  if (properties.number) commonDetails.number = properties.number;
-  if (properties.regionId) commonDetails.region = properties.regionId;
+  appendDetail(t("numberLabel"), properties.number);
+  appendDetail(t("regionLabel"), getRegionName(properties.regionId));
+  appendDetail(t("idLabel"), properties.id);
+  appendDetail(t("categoryLabel"), properties.category);
 
-  const details = { ...commonDetails, ...(properties.details || {}) };
+  for (const [key, value] of Object.entries(properties.details || {})) {
+    appendDetail(key, value);
+  }
 
-  for (const [key, value] of Object.entries(details)) {
-    const row = document.createElement("div");
-    row.className = "detail-row";
-
-    const term = document.createElement("dt");
-    term.textContent = humanizeKey(key);
-
-    const description = document.createElement("dd");
-    description.textContent = formatValue(value);
-
-    row.append(term, description);
-    elements.placeDetails.append(row);
+  buildPlaceLayer();
+  const layer = state.featureLayers.get(id);
+  if (moveMap && layer) {
+    if (typeof layer.getBounds === "function" && layer.getBounds().isValid()) {
+      map.fitBounds(layer.getBounds(), { padding: [45, 45], maxZoom: 19 });
+    } else if (typeof layer.getLatLng === "function") {
+      map.setView(layer.getLatLng(), 18);
+    }
   }
 }
 
-function normalizedSearchText(feature) {
-  const properties = feature.properties;
+function clearSelection() {
+  state.selectedPlaceId = null;
+  elements.emptyMessage.hidden = false;
+  elements.placeContent.hidden = true;
+  elements.placeDetails.replaceChildren();
+  if (state.places) buildPlaceLayer();
+}
+
+function searchHaystack(feature) {
+  const properties = feature.properties || {};
   return [
     properties.id,
     properties.number,
     properties.enName,
     properties.arName,
     properties.category,
-    properties.descriptionEn,
-    properties.descriptionAr,
-    ...(properties.aliases || [])
+    ...(Array.isArray(properties.aliases) ? properties.aliases : [])
   ]
     .filter(Boolean)
     .join(" ")
     .toLocaleLowerCase();
 }
 
-function renderSearchResults() {
+function matchingPlaces() {
   const query = elements.searchInput.value.trim().toLocaleLowerCase();
+  if (!query || !state.places) return [];
+  return state.places.features.filter((feature) => searchHaystack(feature).includes(query)).slice(0, 30);
+}
+
+function renderSearchResults() {
+  const query = elements.searchInput.value.trim();
   elements.searchResults.replaceChildren();
+  elements.searchResults.hidden = !query;
+  if (!query) return;
 
-  if (!query) {
-    elements.searchResults.hidden = true;
-    return;
-  }
-
-  const matches = state.places.features
-    .filter(feature => normalizedSearchText(feature).includes(query))
-    .slice(0, 12);
-
-  elements.searchResults.hidden = false;
-
-  if (!matches.length) {
+  const matches = matchingPlaces();
+  if (matches.length === 0) {
     const message = document.createElement("p");
     message.className = "empty-message";
-    message.style.padding = "0 0.7rem";
-    message.textContent = currentText().noResults;
+    message.textContent = t("noResults");
     elements.searchResults.append(message);
     return;
   }
@@ -418,155 +594,335 @@ function renderSearchResults() {
   for (const feature of matches) {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "result-button";
-
+    button.className = "search-result";
     const name = document.createElement("strong");
     name.textContent = localizedName(feature.properties);
-
-    const category = document.createElement("small");
-    category.textContent = humanizeKey(feature.properties.category || "other");
-
-    button.append(name, category);
+    const meta = document.createElement("span");
+    meta.textContent = [feature.properties?.number, feature.properties?.category]
+      .filter(Boolean)
+      .join(" · ");
+    button.append(name, meta);
     button.addEventListener("click", () => selectPlace(feature.properties.id, true));
     elements.searchResults.append(button);
   }
 }
 
-function updateLanguage() {
-  const text = currentText();
-  const isArabic = state.language === "ar";
-
-  document.documentElement.lang = state.language;
-  document.documentElement.dir = isArabic ? "rtl" : "ltr";
-
-  elements.title.textContent = text.title;
-  elements.subtitle.textContent = text.subtitle;
-  elements.languageButton.textContent = text.languageButton;
-  elements.locationButton.textContent = text.locationButton;
-  elements.searchLabel.textContent = text.searchLabel;
-  elements.searchInput.placeholder = text.searchPlaceholder;
-  elements.categoryLabel.textContent = text.categoryLabel;
-  elements.regionsLabel.textContent = text.regionsLabel;
-  elements.networkLabel.textContent = text.networkLabel;
-  elements.resetButton.textContent = text.resetButton;
-  elements.emptyMessage.textContent = text.emptyMessage;
-  elements.demoWarning.textContent = text.demoWarning;
-
-  if (state.places) {
-    populateCategories();
-    buildRegionLayer();
-    buildPlaceLayer();
-    renderSearchResults();
-
-    if (state.selectedPlaceId) {
-      const selectedFeature = state.places.features.find(
-        feature => feature.properties.id === state.selectedPlaceId
-      );
-      if (selectedFeature) renderPlacePanel(selectedFeature.properties);
-    }
+function fitCampus() {
+  const layers = [state.regionLayer, state.placeLayer].filter(Boolean);
+  const group = L.featureGroup(layers);
+  const bounds = group.getBounds();
+  if (bounds.isValid()) {
+    map.fitBounds(bounds, { padding: [30, 30] });
+  } else {
+    map.setView([26.307, 50.145], 15);
   }
+}
 
+function resetEditorForm() {
+  elements.enName.value = "";
+  elements.arName.value = "";
+  elements.number.value = "";
+  elements.editorCategory.value = "other";
+  elements.editorRegion.value = "";
+  elements.descriptionEn.value = "";
+  elements.descriptionAr.value = "";
+  elements.editorDetails.value = "";
+}
+
+function startEditor() {
+  state.editor.active = true;
+  state.editor.points = [];
+  resetEditorForm();
+  redrawEditorGeometry();
+  elements.editor.hidden = false;
+  elements.addPlaceButton.disabled = true;
+  document.body.classList.add("drawing-mode");
+  setStatus(t("drawingStarted"), false, true);
   refreshMapLayout();
 }
 
-function fitCampus() {
-  const campusFeature = state.regions.features.find(
-    feature => feature.properties.level === 0
-  );
+function stopEditor() {
+  state.editor.active = false;
+  state.editor.points = [];
+  state.editorLayer.clearLayers();
+  elements.editor.hidden = true;
+  elements.addPlaceButton.disabled = false;
+  document.body.classList.remove("drawing-mode");
+  updatePointCount();
+  refreshMapLayout();
+}
 
-  if (!campusFeature) {
-    map.setView(CONFIG.initialCenter, CONFIG.initialZoom);
+function addEditorPoint(latlng) {
+  if (!state.editor.active || !latlng) return;
+  state.editor.points.push([
+    Number(latlng.lng.toFixed(7)),
+    Number(latlng.lat.toFixed(7))
+  ]);
+  redrawEditorGeometry();
+}
+
+function redrawEditorGeometry() {
+  state.editorLayer.clearLayers();
+  const latLngs = state.editor.points.map(([lng, lat]) => [lat, lng]);
+
+  if (latLngs.length >= 3) {
+    L.polygon(latLngs, {
+      color: "#d48806",
+      weight: 3,
+      dashArray: "8 5",
+      fillColor: "#ffc247",
+      fillOpacity: 0.28,
+      interactive: false
+    }).addTo(state.editorLayer);
+  } else if (latLngs.length >= 2) {
+    L.polyline(latLngs, {
+      color: "#d48806",
+      weight: 3,
+      dashArray: "8 5",
+      interactive: false
+    }).addTo(state.editorLayer);
+  }
+
+  latLngs.forEach((latlng, index) => {
+    L.circleMarker(latlng, {
+      radius: 6,
+      color: "#8d5900",
+      weight: 2,
+      fillColor: "#ffffff",
+      fillOpacity: 1,
+      interactive: false
+    })
+      .bindTooltip(String(index + 1), { permanent: true, direction: "top", offset: [0, -5] })
+      .addTo(state.editorLayer);
+  });
+
+  updatePointCount();
+}
+
+function slugify(value) {
+  return String(value || "")
+    .normalize("NFKD")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+}
+
+function createUniqueId(seed) {
+  const base = slugify(seed) || `place-${Date.now().toString(36)}`;
+  const used = new Set((state.places?.features || []).map((feature) => feature.properties?.id));
+  if (!used.has(base)) return base;
+  let suffix = 2;
+  while (used.has(`${base}-${suffix}`)) suffix += 1;
+  return `${base}-${suffix}`;
+}
+
+function parseDetails() {
+  const raw = elements.editorDetails.value.trim();
+  if (!raw) return {};
+  const details = JSON.parse(raw);
+  if (!details || Array.isArray(details) || typeof details !== "object") {
+    throw new Error("Details must be an object");
+  }
+  return details;
+}
+
+function savePlace() {
+  if (state.editor.points.length < 3) {
+    setStatus(t("needPoints"), true, true);
     return;
   }
 
-  const layer = L.geoJSON(campusFeature);
-  if (layer.getBounds().isValid()) {
-    map.fitBounds(layer.getBounds(), { padding: [30, 30] });
+  const enName = elements.enName.value.trim();
+  const arName = elements.arName.value.trim();
+  const number = elements.number.value.trim();
+  if (!enName && !arName) {
+    setStatus(t("needName"), true, true);
+    (state.language === "ar" ? elements.arName : elements.enName).focus();
+    return;
+  }
+
+  let details;
+  try {
+    details = parseDetails();
+  } catch (error) {
+    setStatus(t("invalidDetails"), true, true);
+    elements.editorDetails.focus();
+    return;
+  }
+
+  const category = elements.editorCategory.value.trim().toLowerCase() || "other";
+  const ring = state.editor.points.map((point) => [...point]);
+  ring.push([...ring[0]]);
+  const id = createUniqueId(enName || arName || number || category);
+
+  const feature = {
+    type: "Feature",
+    properties: {
+      id,
+      number: number || null,
+      enName,
+      arName,
+      aliases: [enName, arName, number].filter(Boolean),
+      category,
+      regionId: elements.editorRegion.value || null,
+      entranceNodeIds: [],
+      descriptionEn: elements.descriptionEn.value.trim(),
+      descriptionAr: elements.descriptionAr.value.trim(),
+      details
+    },
+    geometry: {
+      type: "Polygon",
+      coordinates: [ring]
+    }
+  };
+
+  state.places.features.push(feature);
+  setDirty(true);
+  stopEditor();
+  populateCategoryOptions();
+  elements.categoryFilter.value = "all";
+  buildPlaceLayer();
+  selectPlace(id, true);
+  renderSearchResults();
+  setStatus(t("saved"), false, true);
+}
+
+function deleteSelectedPlace() {
+  if (!state.selectedPlaceId || !state.places) return;
+  if (!window.confirm(t("deleteConfirm"))) return;
+
+  state.places.features = state.places.features.filter(
+    (feature) => feature.properties?.id !== state.selectedPlaceId
+  );
+  state.selectedPlaceId = null;
+  setDirty(true);
+  populateCategoryOptions();
+  clearSelection();
+  renderSearchResults();
+  setStatus(t("deleted"), false, true);
+}
+
+function downloadPlaces() {
+  if (!state.places) return;
+  const output = JSON.parse(JSON.stringify(state.places));
+  output.metadata = {
+    ...(output.metadata || {}),
+    updatedAt: new Date().toISOString(),
+    status: "edited"
+  };
+
+  const blob = new Blob([`${JSON.stringify(output, null, 2)}\n`], {
+    type: "application/geo+json;charset=utf-8"
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "places.geojson";
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  setStatus(t("downloaded"), false, true);
+}
+
+function locateUser() {
+  if (!navigator.geolocation) {
+    setStatus(t("locationUnsupported"), true, true);
+    return;
+  }
+  setStatus(t("locationSearching"));
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latlng = [position.coords.latitude, position.coords.longitude];
+      map.setView(latlng, 18);
+      L.circleMarker(latlng, {
+        radius: 8,
+        color: "#ffffff",
+        weight: 3,
+        fillColor: "#1677ff",
+        fillOpacity: 1
+      }).addTo(map);
+      elements.status.hidden = true;
+    },
+    () => setStatus(t("locationDenied"), true, true),
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+  );
+}
+
+async function loadJson(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}: ${url}`);
+  return response.json();
+}
+
+async function loadData() {
+  setStatus(t("loading"));
+  try {
+    [state.regions, state.places, state.network] = await Promise.all([
+      loadJson(DATA_FILES.regions),
+      loadJson(DATA_FILES.places),
+      loadJson(DATA_FILES.network)
+    ]);
+
+    if (!Array.isArray(state.regions?.features) || !Array.isArray(state.places?.features)) {
+      throw new Error("Invalid GeoJSON data");
+    }
+
+    populateRegionOptions();
+    populateCategoryOptions();
+    buildRegionLayer();
+    buildPlaceLayer();
+    buildNetworkLayer();
+    fitCampus();
+    setDirty(false);
+    setStatus(t("loaded"), false, true);
+  } catch (error) {
+    console.error(error);
+    setStatus(t("loadError"), true, false);
+  } finally {
+    refreshMapLayout();
   }
 }
+
+map.on("click", (event) => {
+  if (state.editor.active) addEditorPoint(event.latlng);
+});
 
 elements.languageButton.addEventListener("click", () => {
   state.language = state.language === "en" ? "ar" : "en";
   updateLanguage();
 });
-
-elements.locationButton.addEventListener("click", () => {
-  map.locate({ setView: true, maxZoom: 18, enableHighAccuracy: true });
+elements.locationButton.addEventListener("click", locateUser);
+elements.addPlaceButton.addEventListener("click", startEditor);
+elements.downloadButton.addEventListener("click", downloadPlaces);
+elements.undoButton.addEventListener("click", () => {
+  state.editor.points.pop();
+  redrawEditorGeometry();
 });
-
-map.on("locationfound", event => {
-  L.circle(event.latlng, {
-    radius: event.accuracy,
-    color: "#2563eb",
-    fillOpacity: 0.08,
-    weight: 1
-  }).addTo(map);
-
-  L.circleMarker(event.latlng, {
-    radius: 7,
-    color: "white",
-    fillColor: "#2563eb",
-    fillOpacity: 1,
-    weight: 3
-  })
-    .bindTooltip(currentText().yourLocation)
-    .addTo(map);
+elements.clearButton.addEventListener("click", () => {
+  state.editor.points = [];
+  redrawEditorGeometry();
 });
-
-map.on("locationerror", event => setStatus(event.message, true));
-
+elements.saveButton.addEventListener("click", savePlace);
+elements.cancelButton.addEventListener("click", stopEditor);
+elements.deleteButton.addEventListener("click", deleteSelectedPlace);
 elements.searchInput.addEventListener("input", renderSearchResults);
-
 elements.categoryFilter.addEventListener("change", () => {
   buildPlaceLayer();
-  renderSearchResults();
+  if (state.selectedPlaceId && !state.featureLayers.has(state.selectedPlaceId)) clearSelection();
 });
-
 elements.regionsToggle.addEventListener("change", () => {
+  if (!state.regionLayer) return;
   if (elements.regionsToggle.checked) state.regionLayer.addTo(map);
   else map.removeLayer(state.regionLayer);
 });
-
 elements.networkToggle.addEventListener("change", () => {
   if (elements.networkToggle.checked) state.networkLayer.addTo(map);
   else map.removeLayer(state.networkLayer);
 });
-
 elements.resetButton.addEventListener("click", fitCampus);
 window.addEventListener("resize", refreshMapLayout);
-
-async function loadData() {
-  try {
-    setStatus(currentText().loading);
-
-    const [regionsResponse, placesResponse, networkResponse] = await Promise.all([
-      fetch("data/regions.geojson"),
-      fetch("data/places.geojson"),
-      fetch("data/network.json")
-    ]);
-
-    if (![regionsResponse, placesResponse, networkResponse].every(response => response.ok)) {
-      throw new Error("One or more data files returned an error.");
-    }
-
-    [state.regions, state.places, state.network] = await Promise.all([
-      regionsResponse.json(),
-      placesResponse.json(),
-      networkResponse.json()
-    ]);
-
-    populateCategories();
-    buildRegionLayer();
-    buildPlaceLayer();
-    buildNetworkLayer();
-    fitCampus();
-    refreshMapLayout();
-    hideStatus();
-  } catch (error) {
-    console.error(error);
-    setStatus(currentText().loadError, true);
-  }
-}
 
 updateLanguage();
 loadData();

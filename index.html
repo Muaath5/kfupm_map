@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A lightweight, bilingual map of the KFUPM campus."
+      content="A lightweight, bilingual and editable map of the KFUPM campus."
     />
     <title>KFUPM Campus Map</title>
 
@@ -15,8 +15,9 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=5" />
   </head>
+
   <body>
     <header class="topbar">
       <div>
@@ -34,6 +35,90 @@
 
     <main class="layout">
       <aside class="sidebar" aria-label="Map controls and place information">
+        <section class="data-actions">
+          <button id="add-place-button" type="button">Add a place</button>
+          <button id="download-button" class="secondary-button" type="button">
+            Download places.geojson
+          </button>
+        </section>
+
+        <section id="place-editor" class="editor-panel" hidden>
+          <div class="section-heading">
+            <h2 id="editor-title">Add a place</h2>
+            <span id="point-count" class="point-count">0 points</span>
+          </div>
+
+          <p id="editor-instructions" class="helper-text">
+            Click at least three points on the map to draw the place boundary.
+          </p>
+
+          <div class="form-grid">
+            <label for="editor-en-name" id="editor-en-name-label">English name</label>
+            <input id="editor-en-name" type="text" autocomplete="off" />
+
+            <label for="editor-ar-name" id="editor-ar-name-label">Arabic name</label>
+            <input id="editor-ar-name" type="text" autocomplete="off" dir="rtl" />
+
+            <label for="editor-number" id="editor-number-label">Number</label>
+            <input id="editor-number" type="text" autocomplete="off" />
+
+            <label for="editor-category" id="editor-category-label">Category</label>
+            <input
+              id="editor-category"
+              type="text"
+              list="category-suggestions"
+              value="other"
+              autocomplete="off"
+            />
+            <datalist id="category-suggestions">
+              <option value="academic"></option>
+              <option value="housing"></option>
+              <option value="grass"></option>
+              <option value="parking"></option>
+              <option value="service"></option>
+              <option value="other"></option>
+            </datalist>
+
+            <label for="editor-region" id="editor-region-label">Region</label>
+            <select id="editor-region">
+              <option value="">No region</option>
+            </select>
+
+            <label for="editor-description-en" id="editor-description-en-label">
+              English description
+            </label>
+            <textarea id="editor-description-en" rows="2"></textarea>
+
+            <label for="editor-description-ar" id="editor-description-ar-label">
+              Arabic description
+            </label>
+            <textarea id="editor-description-ar" rows="2" dir="rtl"></textarea>
+
+            <label for="editor-details" id="editor-details-label">
+              Optional details (JSON)
+            </label>
+            <textarea
+              id="editor-details"
+              rows="5"
+              spellcheck="false"
+              placeholder='{"floors": 4, "maintenanceStatus": "good"}'
+            ></textarea>
+          </div>
+
+          <div class="editor-actions">
+            <button id="undo-point-button" class="secondary-button" type="button">
+              Undo point
+            </button>
+            <button id="clear-points-button" class="secondary-button" type="button">
+              Clear points
+            </button>
+            <button id="save-place-button" type="button" disabled>Save place</button>
+            <button id="cancel-editor-button" class="danger-outline-button" type="button">
+              Cancel
+            </button>
+          </div>
+        </section>
+
         <section class="controls">
           <label for="search-input" id="search-label">Search</label>
           <input
@@ -75,6 +160,9 @@
             <h2 id="place-name"></h2>
             <p id="place-description" class="place-description"></p>
             <dl id="place-details" class="details-list"></dl>
+            <button id="delete-place-button" class="danger-button" type="button">
+              Delete this place
+            </button>
           </div>
         </section>
 
@@ -94,6 +182,6 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=5"></script>
   </body>
 </html>
