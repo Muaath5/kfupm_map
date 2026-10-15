@@ -1,74 +1,78 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "status": "demo",
-    "warning": "Fictional sample places and approximate coordinates. Replace before publishing."
+    "status": "edited",
+    "warning": "Fictional sample places and approximate coordinates. Replace before publishing.",
+    "updatedAt": "2026-10-15T11:49:26.745Z"
   },
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "id": "building-22-demo",
-        "number": "22",
-        "arName": "مبنى ٢٢ — مثال",
-        "enName": "Building 22 — Example",
-        "aliases": ["B22", "22", "مبنى 22"],
-        "category": "academic",
-        "regionId": "aljabal",
-        "entranceNodeIds": ["n-b22-main"],
-        "descriptionEn": "Example academic building. Replace this record with verified information.",
-        "descriptionAr": "مبنى أكاديمي تجريبي. استبدل هذه المعلومات ببيانات موثوقة.",
-        "demo": true,
-        "details": {
-          "floors": 5,
-          "departments": ["Example Department"],
-          "accessibleEntrance": true,
-          "maintenanceStatus": "unknown"
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [50.1461, 26.3104],
-            [50.1470, 26.3104],
-            [50.1470, 26.3111],
-            [50.1461, 26.3111],
-            [50.1461, 26.3104]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "housing-815-demo",
-        "number": "815",
-        "arName": "سكن ٨١٥ — مثال",
-        "enName": "Housing 815 — Example",
-        "aliases": ["815", "Housing 815", "سكن 815"],
+        "id": "dorm-37",
+        "number": "837",
+        "enName": "Dorm 37",
+        "arName": "عمارة 37",
+        "aliases": [
+          "Dorm 37",
+          "عمارة 37",
+          "837"
+        ],
         "category": "housing",
         "regionId": "alsakan",
-        "entranceNodeIds": ["n-h815-main"],
-        "descriptionEn": "Example housing record with category-specific details.",
-        "descriptionAr": "سجل تجريبي للسكن يحتوي على معلومات خاصة بهذا التصنيف.",
-        "demo": true,
-        "details": {
-          "roomCount": 120,
-          "floors": 4,
-          "maintenanceStatus": "good",
-          "laundryAvailable": true
-        }
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [50.1390, 26.3110],
-            [50.1398, 26.3110],
-            [50.1398, 26.3118],
-            [50.1390, 26.3118],
-            [50.1390, 26.3110]
+            [
+              50.1464215,
+              26.3130594
+            ],
+            [
+              50.1465636,
+              26.313355
+            ],
+            [
+              50.146687,
+              26.3133094
+            ],
+            [
+              50.1464832,
+              26.3128888
+            ],
+            [
+              50.1463249,
+              26.3129393
+            ],
+            [
+              50.1463437,
+              26.3129801
+            ],
+            [
+              50.1460138,
+              26.3131147
+            ],
+            [
+              50.1460648,
+              26.3132301
+            ],
+            [
+              50.1463947,
+              26.3131219
+            ],
+            [
+              50.1463705,
+              26.3130859
+            ],
+            [
+              50.1464215,
+              26.3130594
+            ]
           ]
         ]
       }
@@ -76,33 +80,389 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "main-field-demo",
-        "number": null,
-        "arName": "المسطح الأخضر — مثال",
-        "enName": "Main Grass Field — Example",
-        "aliases": ["field", "grass", "ملعب", "مسطح أخضر"],
-        "category": "grass",
-        "regionId": "aljabal",
-        "entranceNodeIds": ["n-field-west"],
-        "descriptionEn": "Example recreational grass field.",
-        "descriptionAr": "مسطح أخضر ترفيهي تجريبي.",
-        "demo": true,
-        "details": {
-          "condition": "good",
-          "irrigation": "daily",
-          "lighting": true,
-          "seating": true
-        }
+        "id": "dorm-39",
+        "number": "839",
+        "enName": "Dorm 39",
+        "arName": "عمارة 39",
+        "aliases": [
+          "Dorm 39",
+          "عمارة 39",
+          "839"
+        ],
+        "category": "housing",
+        "regionId": "alsakan",
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [50.1482, 26.3122],
-            [50.1502, 26.3122],
-            [50.1502, 26.3135],
-            [50.1482, 26.3135],
-            [50.1482, 26.3122]
+            [
+              50.1469445,
+              26.3136028
+            ],
+            [
+              50.1469231,
+              26.313562
+            ],
+            [
+              50.1468989,
+              26.3135692
+            ],
+            [
+              50.1467621,
+              26.3132856
+            ],
+            [
+              50.1468909,
+              26.3132279
+            ],
+            [
+              50.1470357,
+              26.3135307
+            ],
+            [
+              50.1470545,
+              26.3135211
+            ],
+            [
+              50.1471296,
+              26.3136509
+            ],
+            [
+              50.1466656,
+              26.3138432
+            ],
+            [
+              50.1466092,
+              26.313723
+            ],
+            [
+              50.1468962,
+              26.3136196
+            ],
+            [
+              50.1469445,
+              26.3136028
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dorm-36",
+        "number": "836",
+        "enName": "Dorm 36",
+        "arName": "عمارة 36",
+        "aliases": [
+          "Dorm 36",
+          "عمارة 36",
+          "836"
+        ],
+        "category": "housing",
+        "regionId": "alsakan",
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              50.1459655,
+              26.3129945
+            ],
+            [
+              50.1458314,
+              26.3129584
+            ],
+            [
+              50.1457268,
+              26.3132636
+            ],
+            [
+              50.1456892,
+              26.3132516
+            ],
+            [
+              50.1456571,
+              26.313391
+            ],
+            [
+              50.1461104,
+              26.3135376
+            ],
+            [
+              50.1461479,
+              26.3134343
+            ],
+            [
+              50.1458207,
+              26.3133429
+            ],
+            [
+              50.1458207,
+              26.3132949
+            ],
+            [
+              50.1458502,
+              26.3133045
+            ],
+            [
+              50.1459655,
+              26.3129945
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dorm-40",
+        "number": "840",
+        "enName": "Dorm 40",
+        "arName": "عمارة 40",
+        "aliases": [
+          "Dorm 40",
+          "عمارة 40",
+          "840"
+        ],
+        "category": "housing",
+        "regionId": "alsakan",
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              50.1466468,
+              26.3139538
+            ],
+            [
+              50.1465476,
+              26.313997
+            ],
+            [
+              50.146738,
+              26.3142951
+            ],
+            [
+              50.1467031,
+              26.3143167
+            ],
+            [
+              50.1466709,
+              26.3142854
+            ],
+            [
+              50.1463678,
+              26.3144657
+            ],
+            [
+              50.1464564,
+              26.3145546
+            ],
+            [
+              50.1467434,
+              26.3143912
+            ],
+            [
+              50.1467568,
+              26.3144056
+            ],
+            [
+              50.1469097,
+              26.3143287
+            ],
+            [
+              50.1466468,
+              26.3139538
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dorm-35",
+        "number": "835",
+        "enName": "Dorm 35",
+        "arName": "عمارة 35",
+        "aliases": [
+          "Dorm 35",
+          "عمارة 35",
+          "835"
+        ],
+        "category": "housing",
+        "regionId": "alsakan",
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              50.1461694,
+              26.314341
+            ],
+            [
+              50.1461077,
+              26.3144395
+            ],
+            [
+              50.1457858,
+              26.3142929
+            ],
+            [
+              50.1457697,
+              26.314317
+            ],
+            [
+              50.1455954,
+              26.3142593
+            ],
+            [
+              50.1458395,
+              26.3138411
+            ],
+            [
+              50.1459494,
+              26.3138892
+            ],
+            [
+              50.1457804,
+              26.3141848
+            ],
+            [
+              50.1458314,
+              26.3142184
+            ],
+            [
+              50.1458502,
+              26.314192
+            ],
+            [
+              50.1461694,
+              26.314341
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "building-22",
+        "number": "22",
+        "enName": "Building 22",
+        "arName": "مبنى 22",
+        "aliases": [
+          "Building 22",
+          "مبنى 22",
+          "22"
+        ],
+        "category": "academic",
+        "regionId": "aljabal",
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              50.1460004,
+              26.3063461
+            ],
+            [
+              50.1456571,
+              26.306
+            ],
+            [
+              50.1469338,
+              26.3050819
+            ],
+            [
+              50.1472503,
+              26.3054184
+            ],
+            [
+              50.1460004,
+              26.3063461
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "building-63",
+        "number": "63",
+        "enName": "Building 63",
+        "arName": "عمارة 63",
+        "aliases": [
+          "Building 63",
+          "عمارة 63",
+          "63"
+        ],
+        "category": "academic",
+        "regionId": "aljabal",
+        "entranceNodeIds": [],
+        "descriptionEn": "",
+        "descriptionAr": "",
+        "details": {}
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              50.141513,
+              26.3111956
+            ],
+            [
+              50.1407728,
+              26.3109913
+            ],
+            [
+              50.1410222,
+              26.310316
+            ],
+            [
+              50.1414728,
+              26.3104602
+            ],
+            [
+              50.1414916,
+              26.3104217
+            ],
+            [
+              50.1417759,
+              26.310489
+            ],
+            [
+              50.141513,
+              26.3111956
+            ]
           ]
         ]
       }
